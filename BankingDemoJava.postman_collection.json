@@ -1,0 +1,327 @@
+{
+	"info": {
+		"_postman_id": "9831c494-ec33-4bf9-9b53-f400b75cc940",
+		"name": "BankingDemoJava",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5159223"
+	},
+	"item": [
+		{
+			"name": "localhost:5000/clients",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/clients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5000/clients by name",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/clients/Jose Lema",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"clients",
+						"Jose Lema"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5000/clients",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\":\"Juan Osorio\",\n    \"genero\":\"Masculino\",\n    \"edad\":40,\n    \"identificacion\":\"1234567891\",\n    \"direccion\":\"13 junio y Equinoccial\",\n    \"telefono\":\"098874587\",\n    \"password\":\"1245\",\n    \"estado\":\"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/clients",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5000/clients/1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\":\"Jose Lema\",\n    \"genero\":\"masculino\",\n    \"edad\":35,\n    \"identificacion\":\"1002003001\",\n    \"direccion\":\"Otavalo sn y principal\",\n    \"telefono\":\"0984637291\",\n    \"password\":\"234567\",\n    \"estado\":\"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/clients/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"clients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5000/clients/1",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\":\"Jose Lema\",\n    \"genero\":null,\n    \"edad\":null,\n    \"identificacion\":null,\n    \"direccion\":\"Otavalo sn y principal\",\n    \"telefono\":\"0984637291\",\n    \"password\":\"234567\",\n    \"estado\":\"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/clients/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"clients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5000/clients/",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/clients/2",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"clients",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5001/accounts/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5001/accounts/",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"accounts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5001/accounts/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"number_account\":\"585545\",\n    \"account_type\":\"Corriente\",\n    \"initial_balance\":1000,\n    \"estate\":\"true\",\n    \"name_client\":\"Jose Lema\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5001/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5001/accounts/232519",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"number_account\":\"232519\",\n    \"account_type\":\"ahorro\",\n    \"initial_balance\":246.0,\n    \"estate\":\"true\",\n    \"name_client\":\"User01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5001/accounts/232519",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"accounts",
+						"232519"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5001/movements/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"numero_cuenta\":\"225487\",\n    \"tipo_movimiento\":\"Corriente\",\n    \"valor\": 600,\n    \"estado\":\"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5001/movements/",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"movements",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5001/reports",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"client\":\"Marianela Montalvo\",\n    \"date\":\"18-09-2024\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5001/reports",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"reports"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
