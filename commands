@@ -4,12 +4,14 @@ mkdir -p shared/mysql_data
 
 ## CREA LOS TARGET DE PROYETO INGRESAR A CADA DIRECTORIO
 
-mvn clean install -DskipTests
+mvn clean install -f account.client/pom.xml
+
+mvn clean install -f account.mov/pom.xm
 
 ## CREAR EL BUILD DEL DOCKERFILE
 
-docker build -t client .
-docker build -t mov .
+docker build -q --rm -t client account.client/.
+docker build -q --rm -t mov account.mov/.
 
 ## EJECUTAR EL COMPOSE
 

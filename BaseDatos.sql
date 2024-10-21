@@ -21,25 +21,17 @@ USE `bankingClient`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-CREATE TABLE `persons` (
-  `id` varchar(255) NOT NULL,
+CREATE TABLE `clients` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `direccion` varchar(255) DEFAULT NULL,
   `edad` int NOT NULL,
   `genero` varchar(255) DEFAULT NULL,
   `identificacion` varchar(255) DEFAULT NULL,
   `nombre` varchar(255) DEFAULT NULL,
   `telefono` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `clients` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `status` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `person_id` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKhrpdrocrsy0i9vq71swv5kf1j` (`person_id`),
-  CONSTRAINT `FKhrpdrocrsy0i9vq71swv5kf1j` FOREIGN KEY (`person_id`) REFERENCES `persons` (`id`)
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `accounts` (
