@@ -1,16 +1,11 @@
-# Usa una imagen base con Java
 FROM openjdk:17-jdk-alpine
 
-MAINTAINER Cesar Sevilla "ing.cesar.sevilla@gmail.com"
+VOLUME /tmp
 
-# Define el directorio de trabajo dentro del contenedor
-WORKDIR /app
+WORKDIR /usr/app
 
-# Copia los JARs de tus aplicaciones al contenedor
-COPY target/account.client-1.0.0.jar /app/account-client.jar
+COPY target/account.client-1.0.0.jar /usr/app
 
-# Expone los puertos en los que se ejecutan tus aplicaciones
 EXPOSE 5000
 
-# Comando para ejecutar tus aplicaciones cuando el contenedor se inicie
-ENTRYPOINT ["java", "-jar", "account-client.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar account.client-1.0.0.jar"]

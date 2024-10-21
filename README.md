@@ -19,8 +19,8 @@ Banking Demo Java Project
 
 ## CREATE THE DOCKERFILE BUILD
 
-    docker build -t client account.client/.
-    docker build -t mov account.mov/.
+    docker build -q --rm -t client account.client/.
+    docker build -q --rm -t mov account.mov/.
 
 ## RUN THE COMPOSE
 

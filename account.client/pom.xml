@@ -5,10 +5,10 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.15</version>
+		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ec.com.banking.neo</groupId>
+	<groupId>ec.com.banking.demo</groupId>
 	<artifactId>account.client</artifactId>
 	<version>1.0.0</version>
 	<name>account.client</name>
@@ -67,8 +67,6 @@
 		</dependency>
 
 	</dependencies>
-
-
 
 	<build>
 		<plugins>

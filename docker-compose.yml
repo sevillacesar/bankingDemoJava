@@ -16,7 +16,7 @@ services:
       - mysql
       - java_app_client
     networks:
-      - bankingNet
+      - banking_net
 
   java_app_client:
     container_name: java_app_client
@@ -32,7 +32,7 @@ services:
     depends_on:
       - mysql
     networks:
-      - bankingNet
+      - banking_net
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -43,7 +43,7 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
-      - bankingNet
+      - banking_net
 
   kafka:
     image: bitnami/kafka:latest
@@ -59,7 +59,7 @@ services:
     depends_on:
       - zookeeper
     networks:   # Mover la sección networks dentro de los servicios
-      - bankingNet
+      - banking_net
 
   mysql:
     image: mysql:8.0.34
@@ -78,10 +78,10 @@ services:
         target: /var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - bankingNet
+      - banking_net
 
 networks:
-  bankingNet:
+  banking_net:
     driver: bridge
 
 volumes:
