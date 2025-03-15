@@ -1,10 +1,10 @@
 package ec.com.banking.demo.account.mov.services;
 
+import ec.com.banking.demo.account.mov.dtos.AccountReqDto;
 import ec.com.banking.demo.account.mov.dtos.AccountDto;
 import ec.com.banking.demo.account.mov.models.Account;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author cesarsevilla
@@ -12,15 +12,13 @@ import java.util.Optional;
  */
 
 public interface AccountService {
-    List<Account> listAccounts();
-
-    Optional<Account> getAccount(Long id);
+    List<AccountDto> listAccounts();
 
     Account findByNumberAccount(String numAccount);
 
-    Account updateAccount(String id, AccountDto cuenta);
+    AccountDto updateAccount(String id, AccountReqDto cuenta);
 
-    void insertAccount(AccountDto cuenta);
+    AccountDto insertAccount(AccountReqDto cuenta);
 
     boolean getAccountById(Long id);
 

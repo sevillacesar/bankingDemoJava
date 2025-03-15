@@ -32,23 +32,23 @@ CREATE TABLE `clients` (
   `password` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `accounts` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `account_type` varchar(255) DEFAULT NULL,
-  `client` varchar(255) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
+  `client_id` bigint DEFAULT NULL,
   `initial_balance` float DEFAULT NULL,
   `number_account` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `movements` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `balance` float DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
   `movement_type` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
   `account_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK1a6nru7corjv5b2vidld4ef5r` (`account_id`),

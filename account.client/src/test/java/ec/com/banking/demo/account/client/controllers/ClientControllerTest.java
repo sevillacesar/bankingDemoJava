@@ -1,5 +1,6 @@
 package ec.com.banking.demo.account.client.controllers;
 
+import ec.com.banking.demo.account.client.mapper.ClientMapper;
 import ec.com.banking.demo.account.client.models.Client;
 import ec.com.banking.demo.account.client.repositories.ClientRepository;
 import ec.com.banking.demo.account.client.services.ClientService;
@@ -77,7 +78,8 @@ public class ClientControllerTest {
         List<Client> mockCliente = Arrays.asList(
                 createMockClient(1L, "", ""),
                 createMockClient(2L, "", ""));
-        when(clientService.listClients()).thenReturn(mockCliente);
+        List<Client> clients = ClientMapper.INSTANCE.clientDtosToClients(clientServiceImpl.listClients());
+        when(clients).thenReturn(mockCliente);
 
         // Llamar al endpoint para obtener ResponseEntity
         ResponseEntity<?> responseEntity = clientController.list();
@@ -100,7 +102,7 @@ public class ClientControllerTest {
         when(clientRepository.findAll()).thenReturn(mockCliente);
 
         // Llame al método para probar
-        List<Client> result = clientServiceImpl.listClients();
+        List<Client> result = ClientMapper.INSTANCE.clientDtosToClients(clientServiceImpl.listClients());
         assertEquals(2, result.size());
     }
 

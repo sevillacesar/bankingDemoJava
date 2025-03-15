@@ -17,7 +17,7 @@ public interface MovementRepository extends JpaRepository<Movement, Long> {
 
   @Query(value = """
       SELECT DATE_FORMAT(h.`date`,'%d/%m/%Y') AS date,
-             c.client,
+             x.nombre,
              c.number_account,
              c.account_type,
              c.initial_balance,
@@ -25,9 +25,10 @@ public interface MovementRepository extends JpaRepository<Movement, Long> {
              h.value as movement,
              m.balance
       FROM accounts c
+      JOIN clients x ON c.client_id=x.id
       JOIN movements m ON c.id = m.account_id
       JOIN backup h ON m.id = h.movement_id
-      WHERE c.client = :client
+      WHERE x.nombre = :client
         AND DATE_FORMAT(h.`date`, '%d-%m-%Y') = :date""", nativeQuery = true)
   List<Object[]> listMovementsReport(String client, String date);
 }

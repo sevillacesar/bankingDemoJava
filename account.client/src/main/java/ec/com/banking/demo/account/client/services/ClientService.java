@@ -1,7 +1,6 @@
 package ec.com.banking.demo.account.client.services;
 
-import ec.com.banking.demo.account.client.dtos.UserDto;
-import ec.com.banking.demo.account.client.models.Client;
+import ec.com.banking.demo.account.client.dtos.ClientDto;
 
 import java.util.List;
 
@@ -12,17 +11,17 @@ import java.util.List;
 
 public interface ClientService {
 
-    List<Client> listClients();
+    List<ClientDto> listClients();
 
-    Client updateClient(Long id, UserDto client);
+    ClientDto updateClient(Long id, ClientDto client);
 
-    Client partialUpdateClient(Long id, UserDto client);
+    ClientDto partialUpdateClient(Long id, ClientDto client);
 
     Long listNameClient(String nombreCliente);
 
-    void insertClient(UserDto userDto);
+    ClientDto insertClient(ClientDto clientDto);
 
-    Client getClientById(Long id);
+    ClientDto getClientById(Long id);
 
     void deleteClient(Long id);
 }

@@ -2,7 +2,6 @@ package ec.com.banking.demo.account.mov.controllers;
 
 import ec.com.banking.demo.account.mov.dtos.MovementDto;
 import ec.com.banking.demo.account.mov.errors.AccountError;
-import ec.com.banking.demo.account.mov.models.Movement;
 import ec.com.banking.demo.account.mov.responses.BaseResponse;
 import ec.com.banking.demo.account.mov.services.MovementService;
 import jakarta.validation.Valid;
@@ -43,8 +42,8 @@ public class MovementsController {
             return ResponseEntity.badRequest().body(accountError.validationErrors(result));
         }
         try {
-            movementService.createMovement(command);
-            return new ResponseEntity<>(new BaseResponse("Datos creados exitósamente", command), HttpStatus.CREATED);
+            return new ResponseEntity<>(new BaseResponse("Datos creados exitósamente",
+                    movementService.createMovement(command)), HttpStatus.CREATED);
         } catch (NoSuchElementException e) {
             return accountError.handleNotFound(e);
         } catch (IllegalArgumentException e) {
@@ -61,8 +60,8 @@ public class MovementsController {
             return ResponseEntity.badRequest().body(accountError.validationErrors(result));
         }
         try {
-            Movement movement = movementService.updateMovement(accountNumber, command);
-            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente", movement), HttpStatus.OK);
+            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente",
+                    movementService.updateMovement(accountNumber, command)), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return accountError.handleNotFound(e);
         } catch (IllegalArgumentException e) {

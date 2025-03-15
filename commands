@@ -6,7 +6,7 @@ mkdir -p shared/mysql_data
 
 mvn clean install -f account.client/pom.xml
 
-mvn clean install -f account.mov/pom.xm
+mvn clean install -f account.mov/pom.xml
 
 ## CREAR EL BUILD DEL DOCKERFILE
 

@@ -9,10 +9,10 @@ import jakarta.validation.constraints.NotNull;
  * bankingDemoJava
  */
 @JsonSerialize
-public record AccountDto(
+public record AccountReqDto(
         @NotNull @JsonProperty("number_account") String numberAccount,
         @NotNull @JsonProperty("account_type") String accountType,
         @NotNull @JsonProperty("initial_balance") Float initialBalance,
         @NotNull String status,
-        @NotNull @JsonProperty("client_id") Long clientId
+        @NotNull @JsonProperty("name_client") String nameClient
 ) {}

@@ -1,6 +1,8 @@
 package ec.com.banking.demo.account.mov.services.impl;
 
+import ec.com.banking.demo.account.mov.dtos.AccountReqDto;
 import ec.com.banking.demo.account.mov.dtos.AccountDto;
+import ec.com.banking.demo.account.mov.mapper.AccountMapper;
 import ec.com.banking.demo.account.mov.models.Account;
 import ec.com.banking.demo.account.mov.repositories.AccountRepository;
 import ec.com.banking.demo.account.mov.services.AccountService;
@@ -26,13 +28,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> listAccounts() {
-        return (List<Account>) accountRepository.findAll();
-    }
-
-    @Override
-    public Optional<Account> getAccount(Long id) {
-        return accountRepository.findById(id);
+    public List<AccountDto> listAccounts() {
+        Iterable<Account> accounts = this.accountRepository.findAll();
+        return AccountMapper.INSTANCE.accountsToAccountDtos(accounts);
     }
 
     @Override
@@ -41,9 +39,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void insertAccount(AccountDto cuenta) {
+    public AccountDto insertAccount(AccountReqDto cuenta) {
         Long clientId = kafkaConsumerService.getDataByNameClient(cuenta.nameClient());
-        Optional<Account> temp = Optional.ofNullable(findByNumberAccount(cuenta.numberAccount()));
+        var temp = Optional.ofNullable(findByNumberAccount(cuenta.numberAccount()));
         if (temp.isPresent()) {
             throw new NoSuchElementException("El numero de cuenta ya existe");
         }
@@ -55,21 +53,24 @@ public class AccountServiceImpl implements AccountService {
                 .accountType(cuenta.accountType())
                 .initialBalance(cuenta.initialBalance())
                 .status(cuenta.status())
-                .client(cuenta.nameClient())
+                .clientId(clientId)
                 .build();
-        accountRepository.save(account);
+        Account newAccount = accountRepository.save(account);
+        return AccountMapper.INSTANCE.accountToAccountDto(newAccount);
     }
 
     @Override
-    public Account updateAccount(String numAccount, AccountDto cuenta) {
+    public AccountDto updateAccount(String numAccount, AccountReqDto cuenta) {
         Account _account = Optional.ofNullable(accountRepository.findByNumberAccount(numAccount))
                 .orElseThrow(() -> new NoSuchElementException("No se encontró información con el número de cuenta:" + numAccount));
+        Long clientId = kafkaConsumerService.getDataByNameClient(cuenta.nameClient());
         _account.setNumberAccount(cuenta.numberAccount());
         _account.setAccountType(cuenta.accountType());
         _account.setInitialBalance(cuenta.initialBalance());
-        _account.setClient(cuenta.nameClient());
+        _account.setClientId(clientId);
         _account.setStatus(cuenta.status());
-        return accountRepository.save(_account);
+        Account account = accountRepository.save(_account);
+        return AccountMapper.INSTANCE.accountToAccountDto(account);
     }
 
     @Override

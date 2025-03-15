@@ -1,8 +1,7 @@
 package ec.com.banking.demo.account.mov.controllers;
 
-import ec.com.banking.demo.account.mov.dtos.AccountDto;
+import ec.com.banking.demo.account.mov.dtos.AccountReqDto;
 import ec.com.banking.demo.account.mov.errors.AccountError;
-import ec.com.banking.demo.account.mov.models.Account;
 import ec.com.banking.demo.account.mov.responses.BaseResponse;
 import ec.com.banking.demo.account.mov.services.AccountService;
 import jakarta.validation.Valid;
@@ -50,13 +49,13 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createAccount(@Valid @RequestBody AccountDto command, BindingResult result) {
+    public ResponseEntity<?> createAccount(@Valid @RequestBody AccountReqDto command, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(accountError.validationErrors(result));
         }
         try {
-            accountService.insertAccount(command);
-            return new ResponseEntity<>(new BaseResponse("Datos creados exitosamente", command), HttpStatus.CREATED);
+            return new ResponseEntity<>(new BaseResponse("Datos creados exitosamente",
+                    accountService.insertAccount(command)), HttpStatus.CREATED);
         } catch (NoSuchElementException e) {
             return accountError.handleNotFound(e);
         } catch (IllegalArgumentException e) {
@@ -68,13 +67,13 @@ public class AccountController {
 
     @PutMapping({ "/{accountId}" })
     public ResponseEntity<?> updateAccount(@PathVariable("accountId") String accountId,
-            @Valid @RequestBody AccountDto command, BindingResult result) {
+                                           @Valid @RequestBody AccountReqDto command, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(accountError.validationErrors(result));
         }
         try {
-            Account account = accountService.updateAccount(accountId, command);
-            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente", command), HttpStatus.OK);
+            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente",
+                    accountService.updateAccount(accountId, command)), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return accountError.handleNotFound(e);
         } catch (IllegalArgumentException e) {
@@ -88,7 +87,7 @@ public class AccountController {
     public ResponseEntity<?> deleteAccount(@PathVariable("accountId") Long accountId) {
         try {
             if (!accountService.getAccountById(accountId))
-                return new ResponseEntity<>(new BaseResponse("El cliente no existe"), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new BaseResponse("La cuenta no existe"), HttpStatus.NOT_FOUND);
             accountService.deleteAccount(accountId);
             return new ResponseEntity<>(new BaseResponse("Se ha eliminado exitosamente"), HttpStatus.OK);
         } catch (IllegalArgumentException e) {

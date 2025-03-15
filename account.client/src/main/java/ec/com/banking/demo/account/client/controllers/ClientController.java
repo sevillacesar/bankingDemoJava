@@ -1,6 +1,6 @@
 package ec.com.banking.demo.account.client.controllers;
 
-import ec.com.banking.demo.account.client.dtos.UserDto;
+import ec.com.banking.demo.account.client.dtos.ClientDto;
 import ec.com.banking.demo.account.client.errors.ClientError;
 import ec.com.banking.demo.account.client.responses.BaseResponse;
 import ec.com.banking.demo.account.client.services.ClientService;
@@ -52,13 +52,13 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUserClient(@Valid @RequestBody UserDto command, BindingResult result) {
+    public ResponseEntity<?> createUserClient(@Valid @RequestBody ClientDto command, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(clientError.validationErrors(result));
         }
         try {
-            clientService.insertClient(command);
-            return new ResponseEntity<>(new BaseResponse("Datos creados exitosamente", command), HttpStatus.CREATED);
+            return new ResponseEntity<>(new BaseResponse("Datos creados exitosamente",
+                    clientService.insertClient(command)), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return clientError.handleBadRequest(e);
         } catch (DataAccessException e) {
@@ -67,14 +67,14 @@ public class ClientController {
     }
 
     @PutMapping({ "/{clientId}" })
-    public ResponseEntity<?> updateClient(@PathVariable("clientId") Long clientId, @Valid @RequestBody UserDto command,
+    public ResponseEntity<?> updateClient(@PathVariable("clientId") Long clientId, @Valid @RequestBody ClientDto command,
             BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(clientError.validationErrors(result));
         }
         try {
-            clientService.updateClient(clientId, command);
-            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente", command), HttpStatus.OK);
+            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente",
+                    clientService.updateClient(clientId, command)), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return clientError.handleNotFound(e);
         } catch (IllegalArgumentException e) {
@@ -86,13 +86,13 @@ public class ClientController {
 
     @PatchMapping({ "/{clientId}" })
     public ResponseEntity<?> partialUpdateClient(@PathVariable("clientId") Long clientId,
-            @Valid @RequestBody UserDto command, BindingResult result) {
+                                                 @Valid @RequestBody ClientDto command, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(clientError.validationErrors(result));
         }
         try {
-            clientService.partialUpdateClient(clientId, command);
-            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente", command), HttpStatus.OK);
+            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente",
+                    clientService.partialUpdateClient(clientId, command)), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return clientError.handleNotFound(e);
         } catch (IllegalArgumentException e) {

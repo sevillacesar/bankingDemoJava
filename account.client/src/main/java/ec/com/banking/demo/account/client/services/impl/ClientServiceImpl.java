@@ -1,9 +1,11 @@
 package ec.com.banking.demo.account.client.services.impl;
 
-import ec.com.banking.demo.account.client.dtos.UserDto;
+import ec.com.banking.demo.account.client.dtos.ClientDto;
+import ec.com.banking.demo.account.client.mapper.ClientMapper;
 import ec.com.banking.demo.account.client.models.Client;
 import ec.com.banking.demo.account.client.repositories.ClientRepository;
 import ec.com.banking.demo.account.client.services.ClientService;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +25,9 @@ public class ClientServiceImpl implements ClientService {
         this.clientRepository = clientRepository;
     }
     @Override
-    public List<Client> listClients() {
-        return (List<Client>) clientRepository.findAll();
+    public List<ClientDto> listClients() {
+        Iterable<Client> clients = clientRepository.findAll();
+        return ClientMapper.INSTANCE.clientsToClientDtos(clients);
     }
 
     @Override
@@ -34,75 +37,58 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void insertClient(UserDto userDto) {
-        clientRepository.save(createClientFromDto(userDto));
+    public ClientDto insertClient(ClientDto clientDto) {
+        Client newClient = clientRepository.save(createClientFromDto(clientDto));
+        return ClientMapper.INSTANCE.clientToClientDto(newClient);
     }
 
-    private Client createClientFromDto(UserDto userDto) {
+    private Client createClientFromDto(ClientDto clientDto) {
         return Client.builder()
-                .password(userDto.password())
+                .password(clientDto.password())
                 .status("A")
-                .nombre(userDto.nombre())
-                .genero(userDto.genero())
-                .edad(userDto.edad())
-                .identificacion(userDto.identificacion())
-                .direccion(userDto.direccion())
-                .telefono(userDto.telefono())
+                .nombre(clientDto.nombre())
+                .genero(clientDto.genero())
+                .edad(clientDto.edad())
+                .identificacion(clientDto.identificacion())
+                .direccion(clientDto.direccion())
+                .telefono(clientDto.telefono())
                 .build();
     }
 
     @Override
-    public Client updateClient(Long id, UserDto clientDto) {
-        Client client = getClientById(id);
-        client.setNombre(clientDto.nombre());
-        client.setGenero(clientDto.genero());
-        client.setEdad(clientDto.edad());
-        client.setIdentificacion(clientDto.identificacion());
-        client.setDireccion(clientDto.direccion());
-        client.setTelefono(clientDto.telefono());
-        client.setPassword(clientDto.password());
-        client.setStatus(clientDto.estado());
-        return clientRepository.save(client);
+    public ClientDto updateClient(Long id, ClientDto clientDto) {
+        getClientById(id);
+        Client client = ClientMapper.INSTANCE.clientDtoToClient(clientDto);
+        client.setId(id);
+        client = clientRepository.save(client);
+        return ClientMapper.INSTANCE.clientToClientDto(client);
     }
 
     @Override
-    public Client partialUpdateClient(Long id, UserDto clientDto) {
-        Client client = getClientById(id);
-        updateClientFields(client, clientDto);
-        return clientRepository.save(client);
+    public ClientDto partialUpdateClient(Long id, ClientDto clientDto) {
+        getClientById(id);
+        Client newClient = updateClientFields(clientDto);
+        return ClientMapper.INSTANCE.clientToClientDto(clientRepository.save(newClient));
     }
 
-    private void updateClientFields(Client client, UserDto clientDto) {
-        if (clientDto.password() != null) {
-            client.setPassword(clientDto.password());
-        }
-        if (clientDto.estado() != null) {
-            client.setStatus(clientDto.estado());
-        }
-        if (clientDto.nombre() != null) {
-            client.setNombre(clientDto.nombre());
-        }
-        if (clientDto.genero() != null) {
-            client.setGenero(clientDto.genero());
-        }
-        if (clientDto.edad() != 0) {
-            client.setEdad(clientDto.edad());
-        }
-        if (clientDto.identificacion() != null) {
-            client.setIdentificacion(clientDto.identificacion());
-        }
-        if (clientDto.direccion() != null) {
-            client.setDireccion(clientDto.direccion());
-        }
-        if (clientDto.telefono() != null) {
-            client.setTelefono(clientDto.telefono());
-        }
+    private Client updateClientFields(ClientDto clientDto) {
+        Client client = new Client();
+        if (StringUtils.isNotEmpty(clientDto.password())) client.setPassword(clientDto.password());
+        if (StringUtils.isNotEmpty(clientDto.estado())) client.setStatus(clientDto.estado());
+        if (StringUtils.isNotEmpty(clientDto.nombre())) client.setNombre(clientDto.nombre());
+        if (StringUtils.isNotEmpty(clientDto.genero())) client.setGenero(clientDto.genero());
+        if (clientDto.edad() != 0) client.setEdad(clientDto.edad());
+        if (StringUtils.isNotEmpty(clientDto.identificacion())) client.setIdentificacion(clientDto.identificacion());
+        if (StringUtils.isNotEmpty(clientDto.direccion())) client.setDireccion(clientDto.direccion());
+        if (StringUtils.isNotEmpty(clientDto.telefono())) client.setTelefono(clientDto.telefono());
+        return client;
     }
 
     @Override
-    public Client getClientById(Long id) {
-        return clientRepository.findById(id)
+    public ClientDto getClientById(Long id) {
+        Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró información del cliente id:" + id));
+        return ClientMapper.INSTANCE.clientToClientDto(client);
     }
 
     @Override

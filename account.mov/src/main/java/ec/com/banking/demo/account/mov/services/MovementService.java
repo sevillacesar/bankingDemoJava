@@ -13,19 +13,17 @@ import java.util.Optional;
  */
 
 public interface MovementService {
-    List<Movement> listMovements();
+    List<MovementDto> listMovements();
 
     Optional<Movement> getMovement(Long id);
 
-    Movement createMovement(MovementDto dto);
+    MovementDto createMovement(MovementDto dto);
 
-    Movement updateMovement(String id, MovementDto movement);
+    MovementDto updateMovement(String id, MovementDto movement);
 
     List<Object[]> listMovements(DepositWithdrawals dto);
 
-    void insertMovement(Movement movement);
-
-    boolean getMovementById(Long id);
+    MovementDto insertMovement(Movement movement);
 
     void deleteMovement(Long id);
 }

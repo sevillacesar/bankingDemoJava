@@ -2,6 +2,7 @@ package ec.com.banking.demo.account.mov.services.impl;
 
 import ec.com.banking.demo.account.mov.dtos.DepositWithdrawals;
 import ec.com.banking.demo.account.mov.dtos.MovementDto;
+import ec.com.banking.demo.account.mov.mapper.MovementMapper;
 import ec.com.banking.demo.account.mov.models.Account;
 import ec.com.banking.demo.account.mov.models.BackupMovement;
 import ec.com.banking.demo.account.mov.models.Movement;
@@ -38,8 +39,9 @@ public class MovementServiceImpl implements MovementService {
     }
 
     @Override
-    public List<Movement> listMovements() {
-        return (List<Movement>) movementRepository.findAll();
+    public List<MovementDto> listMovements() {
+        List<Movement> movements = movementRepository.findAll();
+        return MovementMapper.INSTANCE.movementList2MovementDto(movements);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class MovementServiceImpl implements MovementService {
     }
 
     @Override
-    public Movement createMovement(MovementDto dto) {
+    public MovementDto createMovement(MovementDto dto) {
         Account account = accountService.findByNumberAccount(dto.numeroCuenta());
         Optional<Movement> movementFromDb = getMovement(account.getId());
         if (movementFromDb.isPresent()) {
@@ -63,7 +65,7 @@ public class MovementServiceImpl implements MovementService {
             movement.setBalance(balance);
             movement.setStatus(dto.estado());
             movement.setAccountId(account);
-            insertMovement(movement);
+            MovementDto newMovement = insertMovement(movement);
 
             BackupMovement backupMovement = new BackupMovement();
             backupMovement.setValue(dto.valor());
@@ -71,17 +73,18 @@ public class MovementServiceImpl implements MovementService {
             backupMovement.setMovementId(movement);
             backupMovement.setBalance(balance);
             backupMovementService.insertBackupMovement(backupMovement);
-            return movement;
+            return newMovement;
         }
     }
 
     @Override
-    public void insertMovement(Movement movement) {
-        movementRepository.save(movement);
+    public MovementDto insertMovement(Movement movement) {
+        var newMovement = movementRepository.save(movement);
+        return MovementMapper.INSTANCE.movement2MovementDto(newMovement);
     }
 
     @Override
-    public Movement updateMovement(String numAccount, MovementDto command) {
+    public MovementDto updateMovement(String numAccount, MovementDto command) {
         Account _account = Optional.ofNullable(accountService.findByNumberAccount(numAccount))
                 .orElseThrow(() -> new NoSuchElementException("No se encontró información con el número de cuenta:" + numAccount));
 
@@ -104,17 +107,12 @@ public class MovementServiceImpl implements MovementService {
         backupMovement.setBalance(balance);
         backupMovementService.insertBackupMovement(backupMovement);
 
-        return _movement;
+        return MovementMapper.INSTANCE.movement2MovementDto(_movement);
     }
 
     @Override
     public List<Object[]> listMovements(DepositWithdrawals dto) {
         return movementRepository.listMovementsReport(dto.client(), dto.date());
-    }
-
-    @Override
-    public boolean getMovementById(Long id) {
-        return movementRepository.findById(id).isPresent();
     }
 
     @Override

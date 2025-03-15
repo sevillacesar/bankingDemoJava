@@ -34,5 +34,6 @@ public class Account {
 
     private String status;
 
-    private String client;
+    @Column(name = "client_id")
+    private Long clientId;
 }

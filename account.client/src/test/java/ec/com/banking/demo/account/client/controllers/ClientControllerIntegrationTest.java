@@ -1,7 +1,7 @@
 package ec.com.banking.demo.account.client.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ec.com.banking.demo.account.client.dtos.UserDto;
+import ec.com.banking.demo.account.client.dtos.ClientDto;
 
 import ec.com.banking.demo.account.client.services.ClientService;
 import org.junit.jupiter.api.Assertions;
@@ -46,12 +46,12 @@ public class ClientControllerIntegrationTest {
 
     @Test
     public void createUserClient_ValidInput_ReturnsCreatedStatus() throws Exception {
-        UserDto userDto = createMockPersona("nombre", "genero", 31, "identificacion", "direccion", "telefono",
+        ClientDto clientDto = createMockPersona("nombre", "genero", 31, "identificacion", "direccion", "telefono",
                 "password", "estado");
 
         mockMvc.perform(post("/clients")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userDto)))
+                .content(objectMapper.writeValueAsString(clientDto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.message", containsString("Datos creados exitosamente")));
     }
@@ -69,14 +69,14 @@ public class ClientControllerIntegrationTest {
     @Test
     public void testCreateTaskValidInput() {
 
-        UserDto userDto = createMockPersona("nombre", "genero", 23, "identificacion", "direccion", "telefono",
+        ClientDto clientDto = createMockPersona("nombre", "genero", 23, "identificacion", "direccion", "telefono",
                 "password", "estado");
 
         // Crea un BindingResult simulado sin errores
         BindingResult mockBindingResult = mock(BindingResult.class);
         when(mockBindingResult.hasErrors()).thenReturn(false);
 
-        ResponseEntity<?> responseEntity = clientController.createUserClient(userDto, mockBindingResult);
+        ResponseEntity<?> responseEntity = clientController.createUserClient(clientDto, mockBindingResult);
 
         // Verifique que la respuesta tenga un estado 201 Creado
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
@@ -92,9 +92,9 @@ public class ClientControllerIntegrationTest {
         }
     }
 
-    private UserDto createMockPersona(String nombre, String genero, int edad, String identificacion, String direccion,
-            String telefono, String password, String estado) {
-        UserDto persona = new UserDto(nombre, genero, edad, identificacion, direccion, telefono, password, estado);
+    private ClientDto createMockPersona(String nombre, String genero, int edad, String identificacion, String direccion,
+                                        String telefono, String password, String estado) {
+        ClientDto persona = new ClientDto(nombre, genero, edad, identificacion, direccion, telefono, password, estado);
         return persona;
     }
 }
