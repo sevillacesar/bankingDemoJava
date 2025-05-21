@@ -1,11 +1,14 @@
 package ec.com.banking.demo.account.mov.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 
 /**
  * @author cesarsevilla
@@ -36,4 +39,8 @@ public class Account {
 
     @Column(name = "client_id")
     private Long clientId;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("account")
+    private List<Movement> movements;
 }

@@ -27,6 +27,8 @@ public class Movement {
     @Column(name = "movement_type")
     private String movementType;
 
+    private Float value;
+
     private Float balance;
 
     private String status;
@@ -34,6 +36,6 @@ public class Movement {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     @JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
-    private Account accountId;
+    private Account account;
 
 }

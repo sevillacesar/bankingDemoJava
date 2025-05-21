@@ -16,13 +16,13 @@ import jakarta.persistence.*;
 @Table(name = "clients")
 public final class Client extends Person {
     private String password;
-    private String status;
+    private String estado;
 
     @Builder
     public Client(Long id, String nombre, String genero, int edad, String identificacion, String direccion,
-                  String telefono, String password, String status) {
+                  String telefono, String password, String estado) {
         super(id, nombre, genero, edad, identificacion, direccion, telefono);
         this.password = password;
-        this.status = status;
+        this.estado = estado;
     }
 }

@@ -21,7 +21,5 @@ public interface ClientService {
 
     ClientDto insertClient(ClientDto clientDto);
 
-    ClientDto getClientById(Long id);
-
     void deleteClient(Long id);
 }

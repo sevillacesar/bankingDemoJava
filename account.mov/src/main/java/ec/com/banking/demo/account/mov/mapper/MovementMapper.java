@@ -3,13 +3,11 @@ package ec.com.banking.demo.account.mov.mapper;
 import ec.com.banking.demo.account.mov.dtos.MovementDto;
 import ec.com.banking.demo.account.mov.models.Movement;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface MovementMapper {
-    MovementMapper INSTANCE = Mappers.getMapper(MovementMapper.class);
 
     MovementDto movement2MovementDto(Movement movement);
 

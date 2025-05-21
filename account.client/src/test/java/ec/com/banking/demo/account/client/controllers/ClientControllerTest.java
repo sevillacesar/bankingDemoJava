@@ -1,10 +1,7 @@
 package ec.com.banking.demo.account.client.controllers;
 
-import ec.com.banking.demo.account.client.mapper.ClientMapper;
-import ec.com.banking.demo.account.client.models.Client;
-import ec.com.banking.demo.account.client.repositories.ClientRepository;
+import ec.com.banking.demo.account.client.dtos.ClientDto;
 import ec.com.banking.demo.account.client.services.ClientService;
-import ec.com.banking.demo.account.client.services.impl.ClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -30,12 +27,6 @@ public class ClientControllerTest {
     private ClientService clientService;
 
     @InjectMocks
-    private ClientServiceImpl clientServiceImpl;
-
-    @Mock
-    private ClientRepository clientRepository;
-
-    @InjectMocks
     private ClientController clientController;
 
     @BeforeEach
@@ -44,74 +35,39 @@ public class ClientControllerTest {
     }
 
     @Test
-    public void testListById() {
-        // Simula el nombre del cliente y el cliente encontrado
-        String nombreCliente = "ClienteExistente";
-        Client cliente = Client.builder()
-                .id(1L)
-                .password("securePassword")
-                .status("active")
-                .nombre("Juan")
-                .genero("Masculino")
-                .edad(30)
-                .identificacion("ABC123456")
-                .direccion("Calle Falsa 123")
-                .telefono("555-1234")
-                .build();
+    void testListClients_Success() {
+        // Simula una lista de ClientDto que el servicio debería devolver
+        List<ClientDto> mockClientDtos = Arrays.asList(
+                new ClientDto("Juan", "Masculino", 30, "123", "Calle A", "111", null, "active"),
+                new ClientDto("Maria", "Femenino", 25, "456", "Calle B", "222", null,"active")
+        );
 
-        // Define el comportamiento del servicio de cliente
+        // Define el comportamiento del servicio mockeado
+        when(clientService.listClients()).thenReturn(mockClientDtos);
+
+        // Llama al método del controlador
+        ResponseEntity<?> responseEntity = clientController.list();
+
+        // Verifica la respuesta
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(mockClientDtos, responseEntity.getBody());
+    }
+
+    @Test
+    void testListById_Success() {
+        // Simula el nombre del cliente y el ClientDto que el servicio debería devolver
+        String nombreCliente = "ClienteExistente";
+        //ClientDto mockClientDto = new ClientDto(nombreCliente, "Masculino", 30, "123", "Calle Falsa 123", "555-1234", null,"active");
+
+        // Define el comportamiento del servicio mockeado
         when(clientService.listNameClient(nombreCliente)).thenReturn(1L);
 
         // Llama al método del controlador
         ResponseEntity<?> response = clientController.listById(nombreCliente);
 
-        // Verifica que se devuelva una respuesta exitosa con el código de estado HTTP
-        // 200 OK
+        // Verifica la respuesta
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        // Verifica que el cuerpo de la respuesta contiene el cliente esperado
         assertEquals(1L, response.getBody());
     }
 
-    @Test
-    void testListClients() {
-        // Mocking del método de servicio para devolver una lista de clientes
-        List<Client> mockCliente = Arrays.asList(
-                createMockClient(1L, "", ""),
-                createMockClient(2L, "", ""));
-        List<Client> clients = ClientMapper.INSTANCE.clientDtosToClients(clientServiceImpl.listClients());
-        when(clients).thenReturn(mockCliente);
-
-        // Llamar al endpoint para obtener ResponseEntity
-        ResponseEntity<?> responseEntity = clientController.list();
-
-        // Assertions
-        assertEquals(200, responseEntity.getStatusCodeValue()); // Assuming 200 for OK status
-        assertEquals(mockCliente, responseEntity.getBody()); // Check if the returned list matches the mock data
-    }
-
-    @Test
-    void testListClientsUsingRepositoryClass() {
-        // crea data de ejemplo
-        List<Client> mockCliente = Arrays.asList(
-                createMockClient(1L, "", ""),
-                createMockClient(2L, "", "")
-
-        );
-
-        // Mock del comportamiento del repositorio
-        when(clientRepository.findAll()).thenReturn(mockCliente);
-
-        // Llame al método para probar
-        List<Client> result = ClientMapper.INSTANCE.clientDtosToClients(clientServiceImpl.listClients());
-        assertEquals(2, result.size());
-    }
-
-    // Método auxiliar para crear un objeto cliente simulado
-    private Client createMockClient(long id, String password, String status) {
-        return Client.builder()
-                .id(id)
-                .password(password)
-                .status(status)
-                .build();
-    }
 }

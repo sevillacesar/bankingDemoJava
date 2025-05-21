@@ -11,9 +11,9 @@ import jakarta.validation.constraints.NotNull;
  */
 @JsonSerialize
 public record MovementDto(
-        @NotNull @JsonProperty("tipo_movimiento") String tipoMovimiento,
-        @NotNull Float valor,
-        Float saldo,
-        @NotNull String estado,
-        @NotNull @JsonProperty("numero_cuenta") String numeroCuenta
+        @NotNull @JsonProperty("tipo_movimiento") String movementType,
+        @NotNull @JsonProperty("valor") Float value,
+        @JsonProperty("saldo") Float balance,
+        @NotNull @JsonProperty("estado") String status,
+        @NotNull @JsonProperty("numero_cuenta") String numberAccount
 ) {}

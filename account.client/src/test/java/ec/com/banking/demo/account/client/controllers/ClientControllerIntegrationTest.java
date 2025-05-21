@@ -60,7 +60,7 @@ public class ClientControllerIntegrationTest {
     public void testCreateUser_InvalidCommand() throws Exception {
         mockMvc.perform(post("/clients")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(null)))
+                .content("{}"))
                 // Verifica que se reciba una respuesta de error de solicitud con el código de
                 // estado HTTP 400 BAD REQUEST
                 .andExpect(status().isBadRequest());

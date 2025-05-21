@@ -6,13 +6,10 @@ import ec.com.banking.demo.account.client.responses.BaseResponse;
 import ec.com.banking.demo.account.client.services.ClientService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.NoSuchElementException;
 
 /**
  * @author cesarsevilla
@@ -40,15 +37,7 @@ public class ClientController {
 
     @GetMapping({ "/{nameClient}" })
     public ResponseEntity<?> listById(@NonNull @PathVariable("nameClient") String nameClient) {
-        try {
-            return ResponseEntity.ok(clientService.listNameClient(nameClient));
-        } catch (NoSuchElementException e) {
-            return clientError.handleNotFound(e);
-        } catch (IllegalArgumentException e) {
-            return clientError.handleBadRequest(e);
-        } catch (DataAccessException e) {
-            return clientError.handleInternalError(e);
-        }
+        return ResponseEntity.ok(clientService.listNameClient(nameClient));
     }
 
     @PostMapping
@@ -56,14 +45,8 @@ public class ClientController {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(clientError.validationErrors(result));
         }
-        try {
-            return new ResponseEntity<>(new BaseResponse("Datos creados exitosamente",
-                    clientService.insertClient(command)), HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return clientError.handleBadRequest(e);
-        } catch (DataAccessException e) {
-            return clientError.handleInternalError(e);
-        }
+        return new ResponseEntity<>(new BaseResponse("Datos creados exitosamente",
+                clientService.insertClient(command)), HttpStatus.CREATED);
     }
 
     @PutMapping({ "/{clientId}" })
@@ -72,16 +55,8 @@ public class ClientController {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(clientError.validationErrors(result));
         }
-        try {
-            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente",
-                    clientService.updateClient(clientId, command)), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return clientError.handleNotFound(e);
-        } catch (IllegalArgumentException e) {
-            return clientError.handleBadRequest(e);
-        } catch (DataAccessException e) {
-            return clientError.handleInternalError(e);
-        }
+        return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente",
+                clientService.updateClient(clientId, command)), HttpStatus.OK);
     }
 
     @PatchMapping({ "/{clientId}" })
@@ -90,29 +65,13 @@ public class ClientController {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(clientError.validationErrors(result));
         }
-        try {
-            return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente",
-                    clientService.partialUpdateClient(clientId, command)), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return clientError.handleNotFound(e);
-        } catch (IllegalArgumentException e) {
-            return clientError.handleBadRequest(e);
-        } catch (DataAccessException e) {
-            return clientError.handleInternalError(e);
-        }
+        return new ResponseEntity<>(new BaseResponse("Se actualizo exitosamente",
+                clientService.partialUpdateClient(clientId, command)), HttpStatus.OK);
     }
 
     @DeleteMapping({ "/{clientId}" })
     public ResponseEntity<?> deleteClient(@PathVariable("clientId") Long clientId) {
-        try {
-            clientService.deleteClient(clientId);
-            return new ResponseEntity<>(new BaseResponse("Se ha eliminado exitosamente"), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return clientError.handleNotFound(e);
-        } catch (IllegalArgumentException e) {
-            return clientError.handleBadRequest(e);
-        } catch (DataAccessException e) {
-            return clientError.handleInternalError(e);
-        }
+        clientService.deleteClient(clientId);
+        return new ResponseEntity<>(new BaseResponse("Se ha eliminado exitosamente"), HttpStatus.OK);
     }
 }
